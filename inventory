@@ -1,0 +1,2 @@
+[rhel]
+192.168.64.5 ansible_user=patrick apache_package=apache2 php_package=libapache2-mod-php

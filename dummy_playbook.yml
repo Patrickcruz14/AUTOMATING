@@ -1,0 +1,39 @@
+---
+- name: Demonstration Playbook for Class
+  hosts: all
+  become: yes
+
+  tasks:
+    # This task shows multi-platform package installation
+    - name: Install essential packages
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - vim
+        - tree
+        - wget
+
+    # This task handles different service names
+    - name: Ensure SSH server is running
+      service:
+        name: "{{ 'sshd' if ansible_os_family == 'RedHat' else 'ssh' }}"
+        state: started
+        enabled: yes
+
+    # This task uses Ansible facts
+    - name: Create OS-specific message file
+      copy:
+        content: |
+          This system is running {{ ansible_distribution }} 
+          Version: {{ ansible_distribution_version }}
+          Managed by Ansible
+        dest: /etc/os-info.txt
+        owner: root
+        group: root
+        mode: 0644
+
+    # Demonstration task with debug output
+    - name: Display completion message
+      debug:
+        msg: "Configuration completed successfully on {{ ansible_hostname }}"

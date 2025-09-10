@@ -1,0 +1,18 @@
+---
+- name: Safe Test Playbook
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Gather system facts (safe)
+      setup:  # This only collects information, doesn't change anything
+
+    - name: Display OS family
+      debug:
+        msg: "This is a {{ ansible_os_family }} system"
+
+    - name: Check if vim is installed (safe check)
+      package:
+        name: vim
+        state: present
+      ignore_errors: yes  # This prevents the playbook from failing
